@@ -21,17 +21,22 @@
  ```bash
  : java Students
  Charlie
+
  : java Students 2
  Bob
  Alice
+
  : java Students groups 2
  Bob and David
  Charlie and Alice
+
  : java Students groups 3
  Alice and David and Bob
  Charlie
+
  : java Students coin
  1
+ 
  : java Students die 4
  2
  ```
