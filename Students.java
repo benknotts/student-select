@@ -10,6 +10,7 @@ import java.util.Scanner;
  * For usage information run: <code>java Students help</code>
  */
 class Students {
+    // TODO: Add tests and make more testable
     private static ArrayList<String> students = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -26,6 +27,8 @@ class Students {
             randomStudent(1);
             return;
         }
+        
+        int rngMax = -1;
 
         switch (args[0]) {
             case "groups":
@@ -49,6 +52,15 @@ class Students {
             case "usage":
             case "help":
                 printHelp();
+                break;
+            case "coin":
+                rngMax = 2;
+            case "die":
+            case "number":
+                if (rngMax == -1) {
+                    rngMax = getNumber(args[1]);
+                }
+                System.out.println((int) (Math.random() * rngMax) + 1);
                 break;
             default:
                 int numStudents;
