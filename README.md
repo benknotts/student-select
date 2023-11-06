@@ -12,6 +12,10 @@
 
  To sort the students into random groups, run `java Students groups [group size]`
 
+ To get a random number between 1 and 2, run `java Students coin`
+
+ To get a random number between 1 and n, run `java Students die n`
+
 ### Example usage
 
  ```bash
@@ -26,4 +30,8 @@
  : java Students groups 3
  Alice and David and Bob
  Charlie
+ : java Students coin
+ 1
+ : java Students die 4
+ 2
  ```

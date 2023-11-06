@@ -56,7 +56,6 @@ class Students {
             case "coin":
                 rngMax = 2;
             case "die":
-            case "number":
                 if (rngMax == -1) {
                     rngMax = getNumber(args[1]);
                 }
@@ -145,5 +144,7 @@ class Students {
         System.out.println("  To get a random student: java Students");
         System.out.println("  To get a number of students: java Students [number of students]");
         System.out.println("  To get groups of a certain size: java Students groups [group size]");
+        System.out.println("  To get a random number between 1 and 2: java Students coin");
+        System.out.println("  To get a random number between 1 and n: java Students die n");
     }
 }
