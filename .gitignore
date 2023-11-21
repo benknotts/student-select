@@ -31,3 +31,6 @@ students.txt
 
 # Ignore Gradle build output directory
 build
+
+# Ignore IntelliJ's files
+/.idea/
