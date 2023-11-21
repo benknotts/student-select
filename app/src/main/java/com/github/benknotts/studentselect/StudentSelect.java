@@ -1,5 +1,13 @@
+package com.github.benknotts.studentselect;
+
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -9,9 +17,27 @@ import java.util.Scanner;
  * Can select a number of students, or groups of a certain size.
  * For usage information run: <code>java Students help</code>
  */
-class Students {
+@Command(name = "student-select", mixinStandardHelpOptions = true,
+        description = "Randomly select students for class activities.",
+        subcommands = {Groups.class})
+class StudentSelect {
     // TODO: Add tests and make more testable
     private static ArrayList<String> students = new ArrayList<>();
+
+    @Option(names = {"-f", "--file"}, description = "the students file")
+    private String filename = "students.txt";
+
+    public Integer call() throws Exception {
+        boolean readStatus;
+        if (filename == "-") {
+            readStatus = readStudents(System.in);
+        } else {
+            readStatus = readStudents(filename);
+        }
+        if (!readStatus) return 1;
+
+        return 0;
+    }
 
     public static void main(String[] args) {
         // Hard-code the arguments
@@ -19,7 +45,16 @@ class Students {
         // args = new String[] {"help"}; // Print help message
         // args = new String[] {"groups", "3"}; // Group size
 
-        readStudents("students.txt");
+        // Have a argument handling before everything else. This will check if everything is valid first, and then continue if so, knowing what is needed.
+        // Also ties in to having a file argument
+
+        // readStudents returns false if there was an error reading the file
+        // Default should be students.txt. Should also take an argument for file name, and (somehow) accept STDIN as input with the file "-"
+
+
+        if (!readStudents("students.txt")) {
+            return;
+        }
         Collections.shuffle(students);
 
         // The default action with no other arguments is to get 1 random student
@@ -99,14 +134,42 @@ class Students {
     /**
      * Reads a file into the students array.
      */
-    private static void readStudents(String filename) {
-        // Read each line of students.txt into students array
+//    private static boolean readStudents(String filename) {
+//        // Read each line of students.txt into students array
+//        try (Scanner fileInput = new Scanner(new File(filename))) {
+//            while (fileInput.hasNextLine()) {
+//            students.add(fileInput.nextLine());
+//            }
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Error reading file: " + e.getMessage());
+//            return false;
+//        }
+//        return true;
+//    }
+
+    private static boolean readStudents(String filename) {
         try (Scanner fileInput = new Scanner(new File(filename))) {
-            while (fileInput.hasNextLine()) {
-            students.add(fileInput.nextLine());
-            }
+            readStudents(fileInput);
+            return true;
         } catch (FileNotFoundException e) {
             System.out.println("Error reading file: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private static boolean readStudents(InputStream inputStream) {
+        try (Scanner input = new Scanner(inputStream)) {
+            readStudents(input);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error reading input stream: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private static void readStudents(Scanner scanner) {
+        while (scanner.hasNextLine()) {
+            students.add(scanner.nextLine());
         }
     }
 
@@ -147,4 +210,8 @@ class Students {
         System.out.println("  To get a random number between 1 and 2: java Students coin");
         System.out.println("  To get a random number between 1 and n: java Students die n");
     }
+}
+
+class Groups {
+
 }

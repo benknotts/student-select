@@ -25,3 +25,9 @@ replay_pid*
 
 # Do not publish the list of students
 students.txt
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
